@@ -8,5 +8,3 @@ files[] =annotate.admin.inc
 php=5.6 
 version = "1.0"
 configure=admin/config/annotate/settings
-
-
