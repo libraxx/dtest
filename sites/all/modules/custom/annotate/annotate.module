@@ -1,0 +1,120 @@
+<?php
+include_once 'annotate.triger.inc';
+function annotate_help($path, $args) {
+	switch ($path) {
+		case "admin/help#annotate" :
+			return '<p>this is help of annotate</p>';
+			break;
+		default :
+			break;
+	}
+}
+function annotate_menu() {
+	$items ['admin/config/annotate'] = array (
+			'title' => 'Node annotation',
+			'description' => 'Adjust node annotation options.',
+			'position' => 'right',
+			'weight' => - 5,
+			'page callback' => 'system_admin_menu_block_page',
+			'access arguments' => array (
+					'administer site configuration' 
+			),
+			'file' => 'system.admin.inc',
+			'file path' => drupal_get_path ( 'module', 'system' ) 
+	);
+	
+	$items ['admin/config/annotate/settings'] = array (
+			'title' => 'Annotation Settings',
+			'description' => 'Change how annotations behave.',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array (
+					'annotate_admin_settings' 
+			),
+			'access arguments' => array (
+					'administer site configration' 
+			),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'annotate.admin.inc' 
+	);
+	return $items;
+}
+function annotate_node_load($nodes, $types) {
+	global $user;
+	
+	// Check to see if the person viewing the node is the author, If not then
+	// hide the annotation
+	foreach ( $nodes as $node ) {
+		if ($user->uid != $node->uid) {
+			unset ( $node->annotation );
+		}
+	}
+}
+// function annotate_user_login($user, $account) {
+// $key = $user ["values"] ["name"];
+// $msg = ' ---> @username login ' . date ( 'Ymd His' );
+// watchdog ( 'UserLogin', $msg, array (
+// '@username' => $key
+// ) );
+// }
+// function annotate_node_insert($node) {
+// $a = $node;
+// }
+function annotate_action_info() {
+	return array (
+			'annotate_log_action' => array (
+					'type' => 'system',
+					'label' => t ( 'Annotate_Log' ),
+					'configurable' => FALSE,
+					'triggers' => array (
+							'node_view',
+							'node_insert',
+							'node_update',
+							'node_delete',
+							'user_login',
+							'annotate_insert' 
+					) 
+			),
+			'annotate_mlogm_action' => array (
+					'type' => 'system',
+					'label' => t ( 'Annotate_M_Log' ),
+					'configurable' => true,
+					'triggers' => array (
+							'node_view',
+							'node_insert',
+							'node_update',
+							'node_delete' 
+					) 
+			) 
+	);
+}
+function annotate_action_info_alter(&$info) {
+	if (! in_array ( "comment_insert", $info ['user_block_user_action'] ['triggers'] )) {
+		$info ['user_block_user_action'] ['triggers'] [] = 'comment_insert';
+	}
+}
+function annotate_log_action() {
+	$a = "ssss";
+	watchdog ( 'UserLogin', 'xxxxxx' );
+}
+function annotate_mlogm_action($object, $context) {
+	$a = "ssss";
+	watchdog ( 'UserLogin', 'xxxxxx' );
+}
+function annotate_trigger_info() {
+	return array (
+			'annotate' => array (
+					'annotate_insert' => array (
+							'label' => t ( 'After Saving new aanotations' ) 
+					),
+					'annotate_update' => array (
+							'label' => t ( 'After saving update annotation' ) 
+					),
+					'annotate_dalete' => array (
+							'label' => t ( 'After deleting annotation' ) 
+					),
+					'annotate_view' => array (
+							'label' => t ( 'When annotation is viewed by an authenticated user' ) 
+					) 
+			) 
+	);
+}
