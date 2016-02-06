@@ -48,5 +48,21 @@ function menufun_translate($sss) {
 	return $sss . strval ( date ( 'Ymd His', time () ) );
 }
 function farewall_to_arg($arg) {
-	return 'dddd';
+	$result = db_insert ( "joke" )->fields ( array (
+			'name' => date ( 'His', time () ),
+			'age' => date ( 's', time () ) 
+	) )->execute ();
+	
+	$rows = db_select ( "joke", 'j' )->fields ( 'j', array (
+			'name' 
+	) )->range ( 1, 5 )->execute ();
+	$text = '';
+	foreach ( $rows as $row ) {
+		foreach ( $row as $column ) {
+			$text = $text . $column;
+		}
+		$text = $text . "</br>";
+	}
+	
+	return $text;
 }
