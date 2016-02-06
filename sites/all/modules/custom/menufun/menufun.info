@@ -1,0 +1,7 @@
+name=menufun
+description= this is a menu test
+core=7.x
+version=1.0
+package= Libra Custom
+php=5.6
+file[]=menufun.module

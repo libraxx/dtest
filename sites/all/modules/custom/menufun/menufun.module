@@ -1,0 +1,52 @@
+<?php
+require_once 'menufun.inc';
+function menufun_help($path, $args) {
+	switch ($path) {
+		case "admin/help#menufun" :
+			return "<p>this is menufun help content</p>";
+			break;
+		default :
+			return '';
+			break;
+	}
+}
+function menufun_menu() {
+	$items ['menufun'] = array (
+			'title' => 'menufuntitle',
+			'page callback' => 'menufun_hello',
+			'access callback' => true,
+			'type' => MENU_NORMAL_ITEM,
+			'page arguments' => array (
+					'bin',
+					'wang' 
+			),
+			'file' => 'menufun.inc',
+			'weight' => - 1,
+			'title callback' => 'menufun_translate' 
+	);
+	$items ['menu/%farewall'] = array (
+			'title' => 'farewall',
+			'type' => MENU_NORMAL_ITEM,
+			'page callback' => 'menu_farewell',
+			'page arguments' => array (
+					1 
+			),
+			'file' => 'menufun.inc',
+			// 'access callback' => 'MFP'
+			'access callback' => true 
+	);
+	return $items;
+}
+function menufun_permission() {
+	$permission ['MFP'] = array (
+			'title' => 'menufun_power',
+			'description' => 'test permission' 
+	);
+	return $permission;
+}
+function menufun_translate($sss) {
+	return $sss . strval ( date ( 'Ymd His', time () ) );
+}
+function farewall_to_arg($arg) {
+	return 'dddd';
+}

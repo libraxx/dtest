@@ -1,0 +1,7 @@
+name = milkshake
+description = this is a bread navagator test
+core = 7.x
+php = 5.6
+file[] = milkshake.module
+version=1.0
+package= Libra Custom
