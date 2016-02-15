@@ -1,0 +1,9 @@
+name=job_post
+description=this is job_post test
+files[]=job_post.install
+files[]=job_post.module
+core=7.x
+php=5.6
+version=1.0
+package=Libra Custom
+
