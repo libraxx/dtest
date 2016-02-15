@@ -1,6 +1,6 @@
 name = Color Example
 description = "Create a custom field for inputting and displaying text in a colorful fashion"
-package = Pro Drupal Development
+package = Libra Custom
 core = 7.x
 files[] = color_example.module
 php = 5.6

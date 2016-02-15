@@ -1,6 +1,6 @@
 name = Approval
 description = Blocks for facilitating pending content workflow.
-package = Pro Drupal Development
+package = Libra Custom
 core = 7.x
 version = VERSION
 files[] = approval.module
