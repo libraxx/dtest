@@ -1,0 +1,7 @@
+name=transliteration_title
+description=this is transliteration_title
+core=7.x
+php=5.6
+version=1.0
+files[]=transliteration_title.module
+package=Libra Custom

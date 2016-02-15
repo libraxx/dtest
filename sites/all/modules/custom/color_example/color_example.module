@@ -1,0 +1,182 @@
+<?php
+function color_example_field_info() {
+	return array (
+			
+			'color_example_rgb' => array (
+					
+					'label' => t ( 'Example Color RGB' ),
+					
+					'description' => t ( 'Demonstrates a field composed of an RGB color.' ),
+					
+					'default_widget' => 'color_example_3text',
+					
+					'default_formatter' => 'color_example_simple_text' 
+			) 
+	);
+}
+function color_example_field_widget_info() {
+	return array (
+			'color_example_rgb' => array (
+					'label' => t ( 'Example Color RGB' ),
+					'field types' => array (
+							'color_example_rgb' 
+					),
+					'multiple values' => FIELD_BEHAVIOR_DEFAULT 
+			) 
+	);
+}
+function color_example_field_schema($field) {
+	$columns = array (
+			
+			'rgb' => array (
+					'type' => 'varchar',
+					'length' => 7,
+					'not null' => FALSE 
+			) 
+	);
+	
+	$indexes = array (
+			
+			'rgb' => array (
+					'rgb' 
+			) 
+	);
+	
+	return array (
+			
+			'columns' => $columns,
+			
+			'indexes' => $indexes 
+	);
+}
+function color_example_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
+	foreach ( $items as $delta => $item ) {
+		
+		if (! empty ( $item ['rgb'] )) {
+			
+			if (! preg_match ( '@^#[0-9a-f]{6}$@', $item ['rgb'] )) {
+				
+				$errors [$field ['field_name']] [$langcode] [$delta] [] = array (
+						
+						'error' => 'color_exmple_invalid',
+						
+						'message' => t ( 'Color must be in the HTML format #abcdef.' ) 
+				);
+			}
+		}
+	}
+}
+function color_example_field_is_empty($item, $field) {
+	return empty ( $item ['rgb'] );
+}
+function color_example_filed_formatter_info() {
+	return array (
+			
+			// this formatter just display the hex value in the color indicated.
+			
+			'color_example_simple_text' => array (
+					
+					'label' => t ( 'Simple text-based formatter' ),
+					
+					'field types' => array (
+							'color_example_rgb' 
+					) 
+			),
+			
+			// This formatter changes the background color of the content region.
+			
+			'color_example_color_background' => array (
+					
+					'lable' => t ( 'Change the background of the output text' ),
+					
+					'field types' => array (
+							'color_example_rgb' 
+					) 
+			) 
+	);
+}
+function color_example_filed_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+	$element = array ();
+	
+	switch ($display ['type']) {
+		
+		// This formatter simply output the field as text and with a color.
+		
+		case 'color_example_simple_text' :
+			
+			foreach ( $items as $delta => $item ) {
+				
+				$element [$delta] ['#markup'] = '<p style="color: ' . $item ['rgb'] . '">' . t ( 'The color for event is @code', array (
+						'@code' => $item ['rgb'] 
+				) ) . '</p>';
+			}
+			
+			break;
+		
+		// This formatter adds css to the page changing the '.region-content' area's
+		
+		// background color. If there are many fields, the last one will win.
+		
+		case 'color_exmple_color_background' :
+			
+			foreach ( $items as $delta => $item ) {
+				
+				drupal_add_css ( 'div.region-content { background-color:' . $item ['rgb'] . ';}', array (
+						'type' => 'inline' 
+				) );
+				
+				$element [$delta] ['#markup'] = '<p>' . t ( 'The color for this event has been changed to @code', array (
+						'@code' => $item ['rgb'] 
+				) ) . '</p>';
+			}
+			
+			break;
+	}
+	
+	return $element;
+}
+function color_example_text_validate($element, &$form_state) {
+	$delta = $element ['#delta'];
+	
+	$field = $form_state ['field'] [$element ['#field_name']] [$element ['#language']] ['field'];
+	
+	$field_name = $field ['field_name'];
+	
+	if (isset ( $form_state ['values'] [$field_name] [$element ['#language']] [$delta] )) {
+		
+		$value = $form_state ['values'] [$field_name] [$element ['#language']] [$delta];
+		
+		foreach ( array (
+				'r',
+				'g',
+				'b' 
+		) as $colorfield ) {
+			
+			$val = hexdec ( $values [$colorfield] );
+			
+			// If they left any empty, we'll set the value empty and quit.
+			
+			if (strlen ( $values [$colorfield] ) == 0) {
+				
+				form_set_value ( $element, array (
+						'rgb' => NULL 
+				), $form_state );
+				
+				return;
+			}
+			
+			// If they gave us anything that's not hex reject it.
+			
+			if ((strlen ( $values [$colorfield] ) != 2) || $val < 0 || val > 255) {
+				
+				form_error ( $element [$colorfield], t ( 'Saturation value must be a 2-digit hex value between 00 and ff.' ) );
+			}
+		}
+		
+		$value = sprintf ( '#%02s%02s%02s', $values ['r'], $values ['g'], $values ['b'] );
+		
+		form_set_value ( $element, array (
+				'rgb' => $value 
+		), $form_state );
+	}
+}

@@ -1,0 +1,27 @@
+<?php
+// function transliteration_title_field_info() {
+// 	return array (
+// 			'transliteration_title_field' => array (
+// 					'label' => 'Transliteration title',
+// 					'description' => t ( 'This field stores and renderes transliteration title.' ),
+// // 					'instance_settings' => array (
+// // 							'size' => 255,
+// // 							'upper_lower_case' => 'strtolower',
+// // 							'source_field_id' => 'title' 
+// // 					),
+// 					'default_widget' => 'transliteration_title_field',
+// 					'default_formatter' => 'transliteration_title_default' 
+// 			) 
+// 	);
+// }
+// function transliteration_title_field_widget_info() {
+// 	return array (
+// 			'transliteration_title_field' => array (
+// 					'label' => t ( 'Transliteration title' ),
+// 					'field types' => array (
+// 							'transliteration_title_field' 
+// 					),
+// 					'multiple values' => FIELD_BEHAVIOR_DEFAULT 
+// 			) 
+// 	);
+// } 
