@@ -1,1 +1,24 @@
 <?php
+function block_morelink_form_block_admin_configure_alter(&$form, &$form_state) {
+	$default_morelink_url = '';
+	$default_morelink_title = '';
+	$form ['settings'] ['morelink_url'] = array (
+			'#type' => 'textfield',
+			'#title' => t ( 'More Link url' ),
+			'#maxlength' => 255,
+			'#description' => t ( 'The More Link url of the block as shown to the user.' ),
+			'#default_value' => $default_morelink_url,
+			'#weight' => - 17 
+	);
+	$form ['settings'] ['morelink_title'] = array (
+			'#type' => 'textfield',
+			'#title' => t ( 'More Link title' ),
+			'#maxlength' => 255,
+			'#description' => t ( 'The More Link title of the block as shown to the user.' ),
+			'#default_value' => $default_morelink_title,
+			'#weight' => - 17 
+	);
+}
+function block_morelink_form_block_add_block_form_alter(&$form, &$form_state) {
+	block_morelink_form_block_admin_configure_alter ( $form, $form_state );
+}
