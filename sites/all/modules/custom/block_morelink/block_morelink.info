@@ -1,0 +1,8 @@
+name = 区块更多链接
+description = 为所有的区块提供了一个更多链接
+core = 7.x
+dependencies[] = block
+configure = admin/config/block/morelink
+php=5.6
+version=1.0
+package=Libra Custom
