@@ -1,0 +1,28 @@
+<?php
+/**
+ * @file
+ * 演示Drupal中菜单API的基本用法，主要包括钩子hook_menu(),
+ */
+
+/**
+ * 实现 hook_menu().
+ */
+function menu_abc_menu() {
+	$items ['menu_abc'] = array (
+			'title' => '菜单ABC',
+			'description' => '一个简单的菜单项.',
+			'page callback' => 'menu_abc_callback_page',
+			'access callback' => TRUE 
+	);
+	
+	return $items;
+}
+
+/**
+ * 菜单项menu_abc的回调函数.
+ */
+function menu_abc_callback_page() {
+	//$render_array = array ();
+	$render_array ['#markup'] = t ( '菜单ABC页面内容' );
+	return $render_array;
+}

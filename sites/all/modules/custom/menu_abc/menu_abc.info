@@ -1,0 +1,6 @@
+name = 菜单ABC
+description = 用来学习菜单API的简单实例模块
+core = 7.x
+php=5.6
+version=1.0
+package=Libra Custom
