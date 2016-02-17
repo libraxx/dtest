@@ -66,12 +66,20 @@ function my_menu_alter(&$items) {
 	$items ['user'] ['file path'] = drupal_get_path ( 'module', 'my' );
 }
 // function my_form_user_profile_form_alter(&$form, &$form_state) {
-// 	$form ['morelink_url'] = array (
-// 			'#type' => 'textfield',
-// 			'#title' => t ( 'More Link url' ),
-// 			'#maxlength' => 255,
-// 			'#description' => t ( 'The More Link url of the block as shown to the user.' ),
-// 			'#default_value' => '',
-// 			'#weight' => 1 
-// 	);
+// $form ['morelink_url'] = array (
+// '#type' => 'textfield',
+// '#title' => t ( 'More Link url' ),
+// '#maxlength' => 255,
+// '#description' => t ( 'The More Link url of the block as shown to the user.' ),
+// '#default_value' => '',
+// '#weight' => 1
+// );
 // }
+function my_menu_link_alter(&$item) {
+	if ($item ['link_path'] == 'user') {
+		$item ['hidden'] = 1;
+	}
+	if ($item ['link_path'] == 'user/logout') {
+		$item ['hidden'] = 1;
+	}
+}
