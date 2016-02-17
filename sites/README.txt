@@ -17,3 +17,11 @@ for additional information about obtaining and organizing extensions.
 
 See INSTALL.txt in the Drupal root for information about single-site
 installation or multisite configuration.
+
+CREATE TABLE block_morelink (
+  module varchar(64) NOT NULL,
+  delta varchar(32) NOT NULL,
+  url varchar(255) NOT NULL,
+  title varchar(255) NOT NULL,
+  PRIMARY KEY (module,delta,url,title),
+)

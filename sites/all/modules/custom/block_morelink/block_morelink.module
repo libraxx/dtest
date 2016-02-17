@@ -1,7 +1,11 @@
 <?php
 function block_morelink_form_block_admin_configure_alter(&$form, &$form_state) {
-	$default_morelink_url = '';
-	$default_morelink_title = '';
+	$result = db_query ( "SELECT url, title FROM {block_morelink} WHERE module = :module AND delta = :delta", array (
+			':module' => $form ['module'] ['#value'],
+			':delta' => $form ['delta'] ['#value'] 
+	) )->fetch ();
+	$default_morelink_url = empty ( $result ) ? '' : $result->url;
+	$default_morelink_title = empty ( $result ) ? '' : $result->title;
 	$form ['settings'] ['morelink_url'] = array (
 			'#type' => 'textfield',
 			'#title' => t ( 'More Link url' ),
@@ -18,7 +22,50 @@ function block_morelink_form_block_admin_configure_alter(&$form, &$form_state) {
 			'#default_value' => $default_morelink_title,
 			'#weight' => - 17 
 	);
+	$form ['#validate'] [] = 'block_morelink_block_admin_configure_validate';
+	$form ['#submit'] [] = 'block_morelink_block_admin_configure_submit';
 }
 function block_morelink_form_block_add_block_form_alter(&$form, &$form_state) {
 	block_morelink_form_block_admin_configure_alter ( $form, $form_state );
+}
+
+/**
+ * Form validate handler for block configuration form.
+ */
+function block_morelink_block_admin_configure_validate($form, &$form_state) {
+	// Todo
+}
+function block_morelink_block_admin_configure_submit($form, &$form_state) {
+	db_delete ( 'block_morelink' )->condition ( 'module', $form_state ['values'] ['module'] )->condition ( 'delta', $form_state ['values'] ['delta'] )->execute ();
+	
+	if (! empty ( $form_state ['values'] ['morelink_url'] )) {
+		$query = db_insert ( 'block_morelink' )->fields ( array (
+				'url',
+				'title',
+				'module',
+				'delta' 
+		) );
+		$query->values ( array (
+				'url' => $form_state ['values'] ['morelink_url'],
+				'title' => $form_state ['values'] ['morelink_title'],
+				'module' => $form_state ['values'] ['module'],
+				'delta' => $form_state ['values'] ['delta'] 
+		) );
+		$query->execute ();
+	}
+}
+function block_morelink_preprocess_block(&$variables) {
+	$result = db_query ( "SELECT url, title FROM {block_morelink} WHERE module = :module AND delta = :delta", array (
+			':module' => $variables ['block']->module,
+			':delta' => $variables ['block']->delta 
+	) )->fetch ();
+	$morelink_url = empty ( $result ) ? '' : $result->url;
+	$morelink_title = empty ( $result ) ? '' : $result->title;
+	if ($morelink_url != '') {
+		$variables ['block']->morelink = '<span class="block-more-link">' . l ( t ( 'More' ), $morelink_url, array (
+				'attributes' => array (
+						'title' => $morelink_title 
+				) 
+		) ) . '</span>';
+	}
 }
