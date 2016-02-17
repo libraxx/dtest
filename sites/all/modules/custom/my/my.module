@@ -1,0 +1,77 @@
+<?php
+/**
+ * 实现 hook_menu().
+ */
+function my_menu() {
+	$items ['my'] = array (
+			'title' => '我的主页',
+			'page callback' => 'my_home_page',
+			'file' => 'my.inc',
+			'access callback' => 'my_access_callback' 
+	);
+	
+	$items ['my/home'] = array (
+			'title' => '我的主页',
+			'page callback' => 'my_home_page',
+			'file' => 'my.inc',
+			'access callback' => 'my_access_callback',
+			'type' => MENU_DEFAULT_LOCAL_TASK,
+			'weight' => 1 
+	);
+	
+	$items ['my/orders'] = array (
+			'title' => '我的订单',
+			'page callback' => 'my_orders_page',
+			'file' => 'my.inc',
+			'access callback' => 'my_access_callback',
+			'type' => MENU_LOCAL_TASK,
+			'weight' => 2 
+	);
+	
+	$items ['my/comments'] = array (
+			'title' => '我的评论',
+			'page callback' => 'my_comments_page',
+			'file' => 'my.inc',
+			'access callback' => 'my_access_callback',
+			'type' => MENU_LOCAL_TASK,
+			'weight' => 3 
+	);
+	
+	$items ['my/favorites'] = array (
+			'title' => '我的收藏',
+			'page callback' => 'my_favorites_page',
+			'file' => 'my.inc',
+			'access callback' => 'my_access_callback',
+			'type' => MENU_LOCAL_TASK,
+			'weight' => 4 
+	);
+	return $items;
+}
+
+/**
+ * 页面回调.
+ */
+function my_access_callback() {
+	global $user;
+	$flag = FALSE;
+	// 只有注册用户才能访问自己的主页
+	if ($user->uid > 0) {
+		$flag = TRUE;
+	}
+	return $flag;
+}
+function my_menu_alter(&$items) {
+	$items ['user'] ['page callback'] = 'my_user_page';
+	$items ['user'] ['file'] = 'my.inc';
+	$items ['user'] ['file path'] = drupal_get_path ( 'module', 'my' );
+}
+// function my_form_user_profile_form_alter(&$form, &$form_state) {
+// 	$form ['morelink_url'] = array (
+// 			'#type' => 'textfield',
+// 			'#title' => t ( 'More Link url' ),
+// 			'#maxlength' => 255,
+// 			'#description' => t ( 'The More Link url of the block as shown to the user.' ),
+// 			'#default_value' => '',
+// 			'#weight' => 1 
+// 	);
+// }

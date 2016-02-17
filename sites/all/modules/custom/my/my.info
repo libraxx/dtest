@@ -1,0 +1,3 @@
+name = 用户主页
+description = 使用tabs作为用户主页导航
+core = 7.x
