@@ -25,3 +25,6 @@ CREATE TABLE block_morelink (
   title varchar(255) NOT NULL,
   PRIMARY KEY (module,delta,url,title),
 )
+
+
+ddd
