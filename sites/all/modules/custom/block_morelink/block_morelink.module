@@ -62,10 +62,67 @@ function block_morelink_preprocess_block(&$variables) {
 	$morelink_url = empty ( $result ) ? '' : $result->url;
 	$morelink_title = empty ( $result ) ? '' : $result->title;
 	if ($morelink_url != '') {
-		$variables ['block']->morelink = '<span class="block-more-link">' . l ( t ( 'More' ), $morelink_url, array (
+		// $variables ['block']->morelink = '<span class="block-more-link">' . l ( t ( 'More' ), $morelink_url, array (
+		// 'attributes' => array (
+		// 'title' => $morelink_title
+		// )
+		// ) ) . '</span>';
+		if ($morelink_url != '') {
+			$variables ['block']->morelink = theme ( 'block_morelink_link', array (
+					'url' => $morelink_url,
+					'title' => $morelink_title 
+			) );
+		}
+	}
+}
+function block_morelink_theme() {
+	return array (
+			'block_morelink_link' => array (
+					'variables' => array (
+							'url' => NULL,
+							'title' => NULL 
+					) 
+			) 
+	);
+}
+function theme_block_morelink_link($variables) {
+	$output = "";
+	if (! empty ( $variables ['url'] )) {
+		$morelink_label = t ( 'More' );
+		$output .= '<span class="block-more-link">' . l ( $morelink_label, $variables ['url'], array (
 				'attributes' => array (
-						'title' => $morelink_title 
+						'title' => $variables ['title'] 
 				) 
 		) ) . '</span>';
 	}
+	return $output;
+}
+function block_morelink_menu() {
+	// Block settings.
+	$items ['admin/config/block'] = array (
+			'title' => 'Block',
+			'description' => 'Block configuration.',
+			'position' => 'left',
+			'weight' => - 10,
+			'page callback' => 'system_admin_menu_block_page',
+			'access arguments' => array (
+					'access administration pages' 
+			),
+			'file' => 'system.admin.inc',
+			'file path' => drupal_get_path ( 'module', 'system' ) 
+	);
+	$items ['admin/config/block/morelink'] = array (
+			'title' => 'More link',
+			'description' => 'the more link lable of block.',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array (
+					'block_morelink_label_settings' 
+			),
+			'access arguments' => array (
+					'administer site configuration' 
+			),
+			'weight' => - 10,
+			'file' => 'block_morelink.admin.inc' 
+	);
+	return $items;
 }
