@@ -1,28 +1,38 @@
 <?php
-/**
- * @file
- * 演示Drupal中菜单API的基本用法，主要包括钩子hook_menu(),
- */
-
-/**
- * 实现 hook_menu().
- */
 function menu_abc_menu() {
 	$items ['menu_abc'] = array (
 			'title' => '菜单ABC',
+			'title callback' => 'menu_abc_my_title',
 			'description' => '一个简单的菜单项.',
 			'page callback' => 'menu_abc_callback_page',
-			'access callback' => TRUE 
+			// 'access callback' => TRUE,
+			'access callback' => 'user_access',
+			'access arguments' => array (
+					'access abc' 
+			),
+			'weight' => 10,
+			// 'type' => MENU_CALLBACK,
+			'menu_name' => 'main-menu',
+			
+			'file' => 'menu_abc.inc' 
 	);
-	
+	$items ['menu_abc/sub'] = array (
+			'title' => '菜单ABC子项',
+			'description' => '菜单ABC的子项.',
+			'page callback' => 'menu_abc_sub_callback_page',
+			'page arguments'=>array('X','Y'),
+			'file' => 'menu_abc.inc',
+			'access callback' => TRUE,
+			'weight' => 10,
+			'menu_name' => 'main-menu' 
+	);
 	return $items;
 }
-
-/**
- * 菜单项menu_abc的回调函数.
- */
-function menu_abc_callback_page() {
-	//$render_array = array ();
-	$render_array ['#markup'] = t ( '菜单ABC页面内容' );
-	return $render_array;
+function menu_abc_permission() {
+	$perms = array (
+			'access abc' => array (
+					'title' => t ( '访问菜单ABC示例页面' ) 
+			) 
+	);
+	return $perms;
 }
