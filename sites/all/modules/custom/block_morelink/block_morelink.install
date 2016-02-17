@@ -45,3 +45,6 @@ function block_morelink_schema() {
 	);
 	return $schema;
 }
+function block_morelink_uninstall() {
+	variable_del ( 'block_morelink_label' );
+}

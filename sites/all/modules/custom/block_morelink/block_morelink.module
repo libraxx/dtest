@@ -112,6 +112,7 @@ function block_morelink_menu() {
 			'file path' => drupal_get_path ( 'module', 'system' ) 
 	);
 	$items ['admin/config/block/morelink'] = array (
+			//'title' => 'More link',
 			'title' => 'More link',
 			'description' => 'the more link lable of block.',
 			'page callback' => 'drupal_get_form',
