@@ -1,0 +1,18 @@
+<?php
+/**
+ * 实现 hook_menu().
+ */
+function menu_wildcard_menu() {
+	$items ['wildcard/%'] = array (
+			'title' => '简单的通配符',
+			'description' => '一个简单的包含通配符的菜单项.',
+			'page callback' => 'menu_wildcard_callback_page',
+			'page arguments' => array (
+					1 
+			),
+			'file' => 'menu_wildcard.inc',
+			'access callback' => TRUE 
+	);
+	
+	return $items;
+}
